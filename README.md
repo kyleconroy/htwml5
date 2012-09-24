@@ -10,6 +10,28 @@ Power your Twilio applications using HTML5.
 </html>
 ```
 
+You can change the voice and language of the spoken text.
+
+```html
+<html>
+  <body>
+    <p lang="fr" data-voice="woman">Hello world</p>
+  </body>
+</html>
+```
+
+If you'd like to insert a pause, use an `<hr>` element.
+
+```html
+<html>
+  <body>
+    <p>Hello World</p>
+    <hr data-length=10 />
+    <p>How are you?</p>
+  </body>
+</html>
+```
+
 ## Phone Menus
 
 Using the little known [menu element](), you can easily build phone trees, no
@@ -53,5 +75,57 @@ URI schemes allow users to directly connect to phones, conferences, and clients
 </html>
 ```
 
+## Forms
 
+Forms support text, hidden, and select inputs. You can only have one text or
+select input per form. Label text is also read
 
+In the future, we may support multiple inputs via some magic.
+
+```html
+<html>
+  <body>
+    <form action="/keypads/process" method="POST">
+      <label for="foo">Please enter your zipcode</label>
+      <input name="foo" type="text">
+    </form> 
+  </body>
+</html>
+```
+
+### Validation
+
+You currently must to validation server-side. In the future, we may have
+default error messages if validation attributes are provided
+
+## Recordings
+
+Recording speech works in a similar fashion, just specify the speech attribute
+
+```html
+<html>
+  <body>
+    <form action="/keypads/process" method="POST">
+      <input type="text" speech>
+    </form> 
+  </body>
+</html>
+```
+
+## Well-formed HTML
+
+The above examples are concise, but not entirely correct. To ensure validation
+and proper support in the future, make sure you declare a DOCTYPE,
+character-encoding, and langauge.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    ... content here ...
+  </body>
+</html>
+```
