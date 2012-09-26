@@ -75,6 +75,18 @@ URI schemes allow users to directly connect to phones, conferences, and clients
 </html>
 ```
 
+```html
+<html>
+  <body>
+    <audio> 
+      <source src="http://demo.twilio.com/hellomonkey/monkey.mp3">
+      <p>This text will be read if the above url fails to load</p>
+    </audio>
+  </body>
+</html>
+```
+
+
 ## Forms
 
 Forms support text, hidden, and select inputs. You can only have one text or
