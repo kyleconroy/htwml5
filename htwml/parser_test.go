@@ -40,7 +40,7 @@ func TestParser(t *testing.T) {
 		xml, err := ioutil.ReadFile(path.Join("testdata", twiml))
 		chk(err)
 
-		if string(output) + "\n" != string(xml) {
+		if string(output)+"\n" != "\n"+string(xml) {
 			fmt.Println(string(output))
 			fmt.Println(string(xml))
 			t.Error("Files are different")

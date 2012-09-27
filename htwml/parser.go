@@ -6,14 +6,26 @@ import (
 	"io"
 )
 
-type Response struct {
-		XMLName xml.Name `xml:"Response"`
-		Plays []Play
+type Element struct {
+	XMLName  xml.Name
+	Value    string `xml:",chardata"`
+	Children []Element
 }
 
-type Play struct {
-		XMLName xml.Name `xml:"Play"`
-		Source string `xml:",innerxml"`
+func (element *Element) Append(e Element) {
+	element.Children = append(element.Children, e)
+}
+
+func Response() Element {
+	return Element{XMLName: xml.Name{Local: "Response"}}
+}
+
+func Play(source string) Element {
+	return Element{XMLName: xml.Name{Local: "Play"}, Value: source}
+}
+
+func Say(source string) Element {
+	return Element{XMLName: xml.Name{Local: "Say"}, Value: source}
 }
 
 func Parse(r io.Reader) ([]byte, error) {
@@ -25,12 +37,21 @@ func Parse(r io.Reader) ([]byte, error) {
 	}
 
 	tree := p.Tree()
+	resp := Response()
 
 	tree.Walk(func(n *h5.Node) {
+		tag := n.Data()
+		switch {
+		case tag == "p":
+			resp.Append(Say(n.Children[0].String()))
+		case tag == "audio":
+			for _, a := range n.Attr {
+				if a.Name == "src" {
+					resp.Append(Play(a.Value))
+				}
+			}
+		}
 	})
 
-	resp := Response{Plays: make([]Play, 1)}
-	resp.Plays[0] = Play{Source: "http://example.com/foo.mp3"}
-
-	return xml.Marshal(resp)
+	return xml.MarshalIndent(resp, "", "  ")
 }
